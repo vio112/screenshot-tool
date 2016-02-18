@@ -21,6 +21,8 @@ Route::resource('menus', 'MenusController');
 
 Route::resource('contacts', 'ContactsController');
 
+Route::resource('about', 'AboutController');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
