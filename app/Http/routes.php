@@ -17,9 +17,6 @@ Route::get('/', function () {
 
 Route::resource('blogs', 'BlogsController');
 
-Route::resource('menus', 'MenusController');
-
-Route::resource('contacts', 'ContactsController');
 
 Route::resource('about', 'AboutController');
 
