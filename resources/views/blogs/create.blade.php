@@ -2,7 +2,7 @@
 
 
 @section('content')
-	{!! Form::open(['action' => 'BlogsController@store', 'class' => 'form-horizontal', 'role' => 'form']) !!}
+	{!! Form::open(['url' => '/blogs', 'class' => 'form-horizontal', 'role' => 'form']) !!}
 		<div class="form-group">
 			{!! Form::label('title', 'Title: ', array('class' => 'control-label sr-only')) !!}
 			<div class="col-sm-6">
@@ -23,3 +23,5 @@
 		</div>
 	{!! Form::close() !!}
 @stop
+
+

@@ -8,7 +8,11 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    <h3>Welcome {{ Auth::user()->vio }}!</h3>
+                    @include('partials._blog-list', ['blogs' => $blogs])
+
+                    <?php
+                     // echo '<img src="screenshot.php?url=yahoo.ph"/>';
+                    ?>
                 </div>
             </div>
         </div>

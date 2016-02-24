@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request; //via Dependency Injection
 // use Request;    //via Facade
 use App\Blog;
+use App\User;
 use DB;
+use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+
+
 
 class BlogsController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'show']);
     }
 
     /**
@@ -22,8 +27,9 @@ class BlogsController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all();
-        return view('blogs.index', compact('blogs'));
+        $user = User::findOrFail(Auth::user()->id);
+
+        return view('blogs.index', compact('user'));
     }
 
     /**
@@ -44,7 +50,8 @@ class BlogsController extends Controller
      */
     public function store(Request $request)
     {
-        Blog::create($request->all());
+        $user = User::findOrFail($request->user()->id);
+        $user->blogs()->create($request->all());
 
         return redirect('blogs');
     }

@@ -47,8 +47,7 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
-                    <li><a href="{{ url('/blogs') }}">Blogs</a></li>
+                    <!-- <li><a href="{{ url('/blogs') }}">Blogs</a></li> -->
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -64,6 +63,7 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/blogs') }}"><i class="fa fa-btn fa-file-word-o"></i>My Blogs</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>

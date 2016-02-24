@@ -11,14 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::resource('blogs', 'BlogsController');
-
-
-Route::resource('about', 'AboutController');
 
 /*
 |--------------------------------------------------------------------------
@@ -31,11 +24,8 @@ Route::resource('about', 'AboutController');
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
-    
-});
-
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
-    Route::get('/home', 'HomeController@index');
+    Route::get('/', 'HomeController@index');
+    Route::resource('blogs', 'BlogsController');
 });
