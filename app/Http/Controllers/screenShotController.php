@@ -2,24 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request; //via Dependency Injection
-// use Request;    //via Facade
-use App\Blog;
-use App\User;
-use DB;
-use Auth;
+use Illuminate\Http\Request;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-
-
-
-class BlogsController extends Controller
+class screenshotController extends Controller
 {
-    public function __construct(){
-        // $this->middleware('auth', ['except' => 'show']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -27,9 +16,7 @@ class BlogsController extends Controller
      */
     public function index()
     {
-        $user = User::findOrFail(Auth::user()->id);
-
-        return view('blogs.index', compact('user'));
+        //
     }
 
     /**
@@ -39,7 +26,7 @@ class BlogsController extends Controller
      */
     public function create()
     {
-        return view('blogs.create');
+        //
     }
 
     /**
@@ -50,12 +37,14 @@ class BlogsController extends Controller
      */
     public function store(Request $request)
     {
-        // $user = User::findOrFail($request->user()->id);
-        // $user->blogs()->create($request->all());
+        $this->validate($request, [
+            'textarea' => 'required',
+        ]);
 
         $pieces = explode(PHP_EOL, str_replace(" ", "", $request->input('textarea')));
 
-        return view('blogs.index', compact('pieces'));
+        return view('screenShot.index', compact('pieces'));
+        // return $pieces;
     }
 
     /**
@@ -64,9 +53,9 @@ class BlogsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Blog $blogs)
+    public function show($id)
     {
-         return view('blogs.show', compact('blogs'));
+        //
     }
 
     /**
