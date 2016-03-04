@@ -1,18 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+<h1 style="text-align: center">Results</h1>
 <div class="container main">
-<h1>Results:</h1>
 <br>
-<br>
-
     <style>
         ul{
             list-style: none outside none;
             padding-left: 0;
             margin: 0;
         }
-
         img{
             width: 100%;
             height: auto;
@@ -22,143 +19,125 @@
             min-height: 100vh;
         }
         .thumbnails{
-            width: 100%;
-            height: 262px;
+            width:  205.6px;
+            height: 173px;
             overflow: hidden;
+        }
+        .domainList{
+            background: #e4e4e4;
+        }
+        .panel-info{
+            border-color: #e4e4e4;
+        }
+        .panel-heading{
+            color: white !important;
+            background-color: #286090 !important;
+            border-color: #286090 !important;
         }
     </style>
 
-    <div class="panel panel-default">
+    <div class="panel panel-info">
         <div class="panel-heading">
-            <p><h4><input style="margin-right: 10px;" type="checkbox" id="select_all"/> Select all</h4></p>
+            <p><h4><input style="margin-right: 10px; padding-left: 15px;" type="checkbox" id="select_all"/> Select all / None</h4></p>
         </div>
-    </div>
 
-    <ul>
-        @foreach($pieces as $url)
-            <?php
-                if(empty($url)) { continue; }
-                $limit = 0;
-                $history = 'http://api.screenshots.com/v1/'. $url .'/history/';
-                $content = @file_get_contents($history);
-                $json    = json_decode($content, true);
+        <div class="panel-body" style="padding: 0px;">
+            <ul>
+            {!! Form::open(array('url' => '/downloadTxt', 'id'=>'export', 'data-length' => $count)) !!}
+                @foreach($pieces as $url)
+                    @if(empty($url))
+                        <?php continue; ?>
+                    @endif
 
-                if($content === FALSE) { continue; }
-                else{
-            ?>
+                    <?php
+                    $limit = 0;
+                    $history = 'http://api.screenshots.com/v1/'. $url .'/history/';
+                    $content = @file_get_contents($history);
+                    $json    = json_decode($content, true);
+                    ?>
 
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <li><h4><input style="margin-right: 10px;" type="checkbox" name="checkbox-1" id="checkbox-1"/>{{ $url }}</h4></li>
-                </div>
-
-                <div class="panel-body">
-                    <div class="col-md-12">
-                        <div class="row">
-                                <ul class="content-slider picture" itemscope itemtype="http://schema.org/ImageGallery">
-                                <?php
-                                foreach($json['historical'] as $item) {
-                                    if($limit == 3) {
-                                        break;
-                                    }
-                                    else{
-
-                                    list($width, $height, $type, $attr) = getimagesize( $item['large'] );
-                                ?>
+                    @if($content === FALSE)
+                        <?php continue; ?>
+                    @else
+                        @if($option == 'current')
+                            <div class="panel panel-info">
+                                <div class="panel-body domainList">
                                     <li>
-                                        <div class="thumbnails">
-                                            <a href="<?= $item['large']; ?>" itemprop="contentUrl" data-size="<?=$width;?>x<?=$height;?>">
-                                                <img src="<?= $item['large']; ?>" itemprop="thumbnail" >
-                                            </a>
-                                        </div>
-                                        <hr>
-                                        <p style="text-align: center"><?= $item['date']; ?></p>
+                                        <h4>
+                                            <input style="margin-right: 10px;" type="checkbox" name="url[]" id="checkbox-1" value="{{ $url }}" class = "checkboxes"/>screenshots.com/{{ $url }}
+                                        </h4>
                                     </li>
-                                <?php
-                                        $limit++;
-                                    }
-                                }
-                                ?>
-                                </ul>
-                            <?php } ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </ul>
-
-    <button type="submit" class="btn btn-default">Export Selected Domains to TXT</button>
-
-
-
-    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-        <!-- Background of PhotoSwipe.
-             It's a separate element as animating opacity is faster than rgba(). -->
-        <div class="pswp__bg"></div>
-
-        <!-- Slides wrapper with overflow:hidden. -->
-        <div class="pswp__scroll-wrap">
-
-            <!-- Container that holds slides.
-                PhotoSwipe keeps only 3 of them in the DOM to save memory.
-                Don't modify these 3 pswp__item elements, data is added later on. -->
-            <div class="pswp__container">
-                <div class="pswp__item"></div>
-                <div class="pswp__item"></div>
-                <div class="pswp__item"></div>
-            </div>
-
-            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-            <div class="pswp__ui pswp__ui--hidden">
-
-                <div class="pswp__top-bar">
-
-                    <!--  Controls are self-explanatory. Order can be changed. -->
-
-                    <div class="pswp__counter"></div>
-
-                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                    <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                    <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                    <!-- element will get class pswp__preloader--active when preloader is running -->
-                    <div class="pswp__preloader">
-                        <div class="pswp__preloader__icn">
-                          <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                          </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                    <div class="pswp__share-tooltip"></div>
-                </div>
-
-                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-                </button>
-
-                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-                </button>
-
-                <div class="pswp__caption">
-                    <div class="pswp__caption__center"></div>
-                </div>
-
-            </div>
-
+                                    <div class="panel-body domainList">
+                                        <div class="row">
+                                            <div class="picture" itemscope itemtype="http://schema.org/ImageGallery">
+                                                <?php list($width, $height, $type, $attr) = getimagesize( $json['large_current'] ); ?>
+                                                <div class="photoItem">
+                                                    <div class="thumbnails">
+                                                        <a href="<?= $json['large_current']; ?>" itemprop="contentUrl" data-size="<?=$width;?>x<?=$height;?>">
+                                                            <img width="262" height="216" src="<?= $json['small_current']; ?>" itemprop="thumbnail" >
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-md-offset-5">
+                                        <a style="margin-left: 35px;" target="_blank" href="http://screenshots.com/{{ $url }}" class="btn btn-default" role="button">See more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <div class="panel panel-info">
+                                <div class="panel-body domainList">
+                                    <li>
+                                        <h4>
+                                            <input style="margin-right: 10px;" type="checkbox" name="url[]" id="checkbox-1" value="{{ $url }}" class = "checkboxes"/>screenshots.com/{{ $url }}
+                                        </h4>
+                                    </li>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <ul class="content-slider picture" itemscope itemtype="http://schema.org/ImageGallery">
+                                                @foreach($json['historical'] as $item)
+                                                    @if($limit == 8)
+                                                        <?php break; ?>
+                                                    @else
+                                                        <?php
+                                                        list($width, $height, $type, $attr) = getimagesize( $item['large'] );
+                                                        ?>
+                                                        <li class="photoItem">
+                                                            <div class="thumbnails">
+                                                                <a href="<?= $item['large']; ?>" itemprop="contentUrl" data-size="<?=$width;?>x<?=$height;?>">
+                                                                    <img src="<?= $item['small']; ?>" itemprop="thumbnail" >
+                                                                </a>
+                                                            </div>
+                                                            <hr>
+                                                            <p style="text-align: center"><?= $item['date']; ?></p>
+                                                        </li>
+                                                        <?php
+                                                        $limit++;
+                                                        ?>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-md-offset-5">
+                                        <a style="margin-left: 35px;" target="_blank" href="http://screenshots.com/{{ $url }}" class="btn btn-default" role="button">See more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+                @endforeach
+                {{ Form::close() }}<!-- //add -->
+            </ul>
+            <button type="submit" class="btn btn-primary" id="export-text" style="margin: 15px;" disabled>Export Selected Domains to TXT</button>
         </div>
-
     </div>
+
+
+
+    @include('partials._photoswipe')
 </div>
 @stop
 
@@ -167,7 +146,7 @@
     <script>
          $(document).ready(function() {
             $(".content-slider").lightSlider({
-                item:4,
+                item:5,
                 loop:false,
                 slideMargin: 20,
                 slideMove:1,
@@ -176,6 +155,7 @@
             });
 
             $('#select_all').click(function(event) {
+                $('#export-text').prop('disabled', false);
                 if(this.checked) {
                     // Iterate each checkbox
                     $(':checkbox').each(function() {
@@ -188,6 +168,23 @@
                     });
                 }
             });
+
+            $("#export-text").click(function(){//add
+                $("#export").submit();//add
+            });
+
+            $(".checkboxes").change(function(){//add
+                if ($('.checkboxes:checked').length == 0) {
+                    $('#export-text').prop('disabled', true);
+                }else{
+                    $('#export-text').prop('disabled', false);
+                }
+                if ($('.checkboxes:checked').length == $('#export').data("length")) {//add
+                   $("#select_all").prop('checked', true);//add
+               }else{//add
+                    $("#select_all").prop('checked', false);//add
+               }//add
+            });//add
 
 
             var $pswp = $('.pswp')[0];
@@ -221,7 +218,7 @@
                     image[index].src = value['src'];
                 });
 
-                $pic.on('click', 'li', function(event) {
+                $pic.on('click', '.photoItem', function(event) {
                     event.preventDefault();
 
                     var $index = $(this).index();
@@ -235,8 +232,6 @@
                     lightBox.init();
                 });
             });
-
-
         });
     </script>
 @stop

@@ -29,4 +29,5 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/', 'HomeController@index');
     Route::resource('blogs', 'BlogsController');
     Route::resource('screenShot', 'screenShotController');
+    Route::post('/downloadTxt', 'screenShotController@downloadTxt');
 });
