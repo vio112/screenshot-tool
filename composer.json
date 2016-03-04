@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "^5.2",
         "mazedlx/calendar": "dev-master",
-        "maddhatter/laravel-fullcalendar": "~1.0"
+        "maddhatter/laravel-fullcalendar": "~1.0",
+        "twbs/bootstrap": "^3.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

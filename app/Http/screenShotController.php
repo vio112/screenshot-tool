@@ -39,33 +39,24 @@ class screenshotController extends Controller
     {
         $this->validate($request, [
             'textarea' => 'required',
-            ]);
+        ]);
 
         $option = $request->input('screenOption');
-        $count = count($option)+1;
+        $pieces = explode(PHP_EOL, str_replace(" ", "", $request->input('textarea')));
 
-        $to_be_replace = array(" ","https://", "http://", "www.");
-        $will_replace = array("", "", "", "", "");
-        $pieces = explode(PHP_EOL, str_replace($to_be_replace, $will_replace, $request->input('textarea')));
-
-
-        return view('screenShot.index', compact('pieces', 'option', 'count'));
+        return view('screenShot.index', compact('pieces', 'option'));
+        // return $screenOption;
     }
 
-    public function downloadTxt(Request $request) {
 
-        $contents = implode(PHP_EOL, $request->input('url'));
-
-        $filename = 'export.txt';
-
-        $headers = array(
-          'Content-Type' => 'plain/txt',
-          'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-          'Content-Length' => strlen($contents),
-        );
-
-        return \Response::make($contents, 200, $headers);
+    public function createTXT(Request $request)
+    {
+            $fileText = "This is some text\nThis test belongs to my file download\nBooyah";
+            $myName = "ThisDownload.txt";
+            $headers = ['Content-type'=>'text/plain', 'test'=>'YoYo', 'Content-Disposition'=>sprintf('attachment; filename="%s"', $myName),'X-BooYAH'=>'WorkyWorky','Content-Length'=>sizeof($fileText)];
+            return Response::make($fileText, 200, $headers);
     }
+
     /**
      * Display the specified resource.
      *
@@ -74,7 +65,7 @@ class screenshotController extends Controller
      */
     public function show($id)
     {
-        // return view('screenShot.show', compact('id'));
+        return view('screenShot.show', compact('id'));
     }
 
     /**
