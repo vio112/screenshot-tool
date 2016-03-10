@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf_token" content="{{ csrf_token() }}"/>
 
     <title>Laravel</title>
 
@@ -12,12 +13,8 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
-    {!! Html::style('css/lightslider.css') !!}
-    {!! Html::style('css/photoswipe.css') !!}
-    {!! Html::style('css/lity.css') !!}
-    {!! Html::style('css/default-skin/default-skin.css') !!}
+    <link href="{{ elixir('css/all.css') }}" rel="stylesheet">
+
 
     <style>
         body {
@@ -66,13 +63,7 @@
 
 
     <!-- JavaScripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    {!! Html::script('js/lightslider.js') !!}
-    {!! Html::script('js/photoswipe.js') !!}
-    {!! Html::script('js/photoswipe-ui-default.js') !!}
-    {!! Html::script('js/lity.js') !!}
-    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    <script src="{{ elixir('js/all.js') }}"></script>
 
     @yield('scripts')
 </body>

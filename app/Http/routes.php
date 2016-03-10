@@ -30,4 +30,5 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('blogs', 'BlogsController');
     Route::resource('screenShot', 'screenShotController');
     Route::post('/downloadTxt', 'screenShotController@downloadTxt');
+    Route::get('/imagePaginate/{imagePaginate}', 'screenShotController@imagePaginate');
 });

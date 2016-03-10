@@ -12,5 +12,21 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss').version('css/app.css');
+    mix.sass('app.scss', 'resources/assets/css')
+	    .styles([
+	         'app.css',
+	         'lightslider.css',
+	         'lity.css',
+	         'photoswipe.css',
+	         'default-skin/default-skin.css'
+	    ])
+        .scripts([
+            'jquery-2.2.1.min.js',
+            'bootstrap.min.js',
+            'lightslider.js',
+            'lity.js',
+            'photoswipe.js',
+            'photoswipe-ui-default.js'
+        ])
+        .version(["css/all.css", "js/all.js"]);
 });
