@@ -50,6 +50,7 @@ class screenshotController extends Controller
 
 
         return view('screenShot.index', compact('pieces', 'option', 'count'));
+        // return $pieces;
     }
 
     public function downloadTxt(Request $request) {
@@ -64,6 +65,7 @@ class screenshotController extends Controller
           'Content-Length' => strlen($contents),
         );
 
+        // return strlen($contents);
         return \Response::make($contents, 200, $headers);
     }
     /**

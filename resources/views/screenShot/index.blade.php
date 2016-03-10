@@ -179,6 +179,7 @@
                 }else{
                     $('#export-text').prop('disabled', false);
                 }
+
                 if ($('.checkboxes:checked').length == $('#export').data("length")) {
                    $("#select_all").prop('checked', true);
                }else{
