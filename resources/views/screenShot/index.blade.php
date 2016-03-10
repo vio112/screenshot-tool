@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <h1 style="text-align: center">Results</h1>
 <div class="container main">
 <br>
@@ -14,6 +15,12 @@
             width: 100%;
             height: auto;
         }
+
+        .loading{
+            width:  205.6px;
+            height: 173px;
+        }
+
         .main{
             background: #f8f8f8;
             min-height: 100vh;
@@ -96,26 +103,19 @@
                                     </li>
                                     <div class="col-md-12">
                                         <div class="row">
-                                            <ul class="content-slider picture" itemscope itemtype="http://schema.org/ImageGallery">
+                                            <ul class="content-slider picture"  id="<?= $url; ?>" itemscope itemtype="http://schema.org/ImageGallery">
                                                 @foreach($json['historical'] as $item)
                                                     @if($limit == 8)
                                                         <?php break; ?>
                                                     @else
-                                                        <?php
-                                                        list($width, $height, $type, $attr) = getimagesize( $item['large'] );
-                                                        ?>
                                                         <li class="photoItem">
                                                             <div class="thumbnails">
-                                                                <a href="<?= $item['large']; ?>" itemprop="contentUrl" data-size="<?=$width;?>x<?=$height;?>">
-                                                                    <img src="<?= $item['small']; ?>" itemprop="thumbnail" >
-                                                                </a>
+
                                                             </div>
                                                             <hr>
-                                                            <p style="text-align: center"><?= $item['date']; ?></p>
+
                                                         </li>
-                                                        <?php
-                                                        $limit++;
-                                                        ?>
+                                                        <?php $limit++; ?>
                                                     @endif
                                                 @endforeach
                                             </ul>
@@ -145,13 +145,21 @@
 @section('scripts')
     <script>
          $(document).ready(function() {
-            $(".content-slider").lightSlider({
-                item:5,
-                loop:false,
-                slideMargin: 20,
-                slideMove:1,
-                easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
-                speed:600
+
+            $(".photoItem").each(function(){
+                $('.thumbnails').html('<img class="loading" src="/img/loading.gif">');
+                // alert("imagePaginate/" + $('.photoItem').attr('id'));
+                $.ajax({
+                        url: 'screenShot/' + $('.picture').attr('id'),
+                        type: 'get',
+                        // data:{index: $('.photoItem').attr('id')},
+                        dataType: 'json',
+                        success: function (data) {
+                                // $('.thumbnails').html('<img src="' + data.large_current + '"><br>');
+                                // alert( data.status );
+                                console.log( data );
+                        }
+                   });
             });
 
             $('#select_all').click(function(event) {
@@ -186,6 +194,15 @@
                }
             });
 
+
+            $(".content-slider").lightSlider({
+                item:5,
+                loop:false,
+                slideMargin: 20,
+                slideMove:1,
+                easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
+                speed:600
+            });
 
             var $pswp = $('.pswp')[0];
             var image = [];

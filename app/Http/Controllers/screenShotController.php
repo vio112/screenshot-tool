@@ -52,6 +52,29 @@ class screenshotController extends Controller
         return view('screenShot.index', compact('pieces', 'option', 'count'));
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $history = 'http://api.screenshots.com/v1/'. $id .'/history/';
+        $content = file_get_contents($history);
+
+        return response()->json($content);
+        // return view('screenShot.show', compact('id'));
+    }
+
+    public function imagePaginate($id)
+    {
+        $history = 'http://api.screenshots.com/v1/'. $id .'/history/';
+        $content = file_get_contents($history);
+
+        return response()->json($content);
+    }
+
     public function downloadTxt(Request $request) {
 
         $contents = implode(PHP_EOL, $request->input('url'));
@@ -65,16 +88,6 @@ class screenshotController extends Controller
         );
 
         return \Response::make($contents, 200, $headers);
-    }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // return view('screenShot.show', compact('id'));
     }
 
     /**
