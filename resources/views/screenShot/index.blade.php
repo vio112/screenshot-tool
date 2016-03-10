@@ -146,21 +146,21 @@
     <script>
          $(document).ready(function() {
 
-            $(".photoItem").each(function(){
-                $('.thumbnails').html('<img class="loading" src="/img/loading.gif">');
-                // alert("imagePaginate/" + $('.photoItem').attr('id'));
-                $.ajax({
-                        url: 'screenShot/' + $('.picture').attr('id'),
-                        type: 'get',
-                        // data:{index: $('.photoItem').attr('id')},
-                        dataType: 'json',
-                        success: function (data) {
-                                // $('.thumbnails').html('<img src="' + data.large_current + '"><br>');
-                                // alert( data.status );
-                                console.log( data );
-                        }
-                   });
-            });
+            // $(".photoItem").each(function(){
+            //     $('.thumbnails').html('<img class="loading" src="/img/loading.gif">');
+            //     // alert("imagePaginate/" + $('.photoItem').attr('id'));
+            //     $.ajax({
+            //             url: 'screenShot/' + $('.picture').attr('id'),
+            //             type: 'get',
+            //             // data:{index: $('.photoItem').attr('id')},
+            //             dataType: 'json',
+            //             success: function (data) {
+            //                     // $('.thumbnails').html('<img src="' + data.large_current + '"><br>');
+            //                     // alert( data.status );
+            //                     console.log( data );
+            //             }
+            //        });
+            // });
 
             $('#select_all').click(function(event) {
                 $('#export-text').prop('disabled', false);
