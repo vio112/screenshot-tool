@@ -5,50 +5,14 @@
 <h1 style="text-align: center">Results</h1>
 <div class="container main">
 <br>
-    <style>
-        ul{
-            list-style: none outside none;
-            padding-left: 0;
-            margin: 0;
-        }
-        img{
-            width: 100%;
-            height: auto;
-        }
 
-        .loading{
-            width:  205.6px;
-            height: 173px;
-        }
-
-        .main{
-            background: #f8f8f8;
-            min-height: 100vh;
-        }
-        .thumbnails{
-            width:  205.6px;
-            height: 173px;
-            overflow: hidden;
-        }
-        .domainList{
-            background: #e4e4e4;
-        }
-        .panel-info{
-            border-color: #e4e4e4;
-        }
-        .panel-heading{
-            color: white !important;
-            background-color: #286090 !important;
-            border-color: #286090 !important;
-        }
-    </style>
 
     <div class="panel panel-info">
         <div class="panel-heading">
-            <p><h4><input style="margin-right: 10px; padding-left: 15px;" type="checkbox" id="select_all"/> Select all / None</h4></p>
+            <p><h4><input type="checkbox" id="select_all"/> Select all / None</h4></p>
         </div>
 
-        <div class="panel-body" style="padding: 0px;">
+        <div id="main-panel-body" class="panel-body">
             <ul>
             {!! Form::open(array('url' => '/downloadTxt', 'id'=>'export', 'data-length' => $count)) !!}
                 @foreach($pieces as $url)
@@ -71,7 +35,7 @@
                                 <div class="panel-body domainList">
                                     <li>
                                         <h4>
-                                            <input style="margin-right: 10px;" type="checkbox" name="url[]" id="checkbox-1" value="{{ $url }}" class = "checkboxes"/>screenshots.com/{{ $url }}
+                                            <input type="checkbox" name="url[]" id="checkbox-1" value="{{ $url }}" class = "checkboxes"/>screenshots.com/{{ $url }}
                                         </h4>
                                     </li>
                                     <div class="panel-body domainList">
@@ -89,7 +53,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-md-offset-5">
-                                        <a style="margin-left: 35px;" target="_blank" href="http://screenshots.com/{{ $url }}" class="btn btn-default" role="button">See more</a>
+                                        <a target="_blank" href="http://screenshots.com/{{ $url }}" class="btn btn-default See-more-button" role="button">See more</a>
                                     </div>
                                 </div>
                             </div>
@@ -98,22 +62,25 @@
                                 <div class="panel-body domainList">
                                     <li>
                                         <h4>
-                                            <input style="margin-right: 10px;" type="checkbox" name="url[]" id="checkbox-1" value="{{ $url }}" class = "checkboxes"/>screenshots.com/{{ $url }}
+                                            <input type="checkbox" name="url[]" id="checkbox-1" value="{{ $url }}" class = "checkboxes"/>screenshots.com/{{ $url }}
                                         </h4>
                                     </li>
                                     <div class="col-md-12">
                                         <div class="row">
-                                            <ul class="content-slider picture"  id="<?= $url; ?>" itemscope itemtype="http://schema.org/ImageGallery">
+                                            <ul class="content-slider picture" itemscope itemtype="http://schema.org/ImageGallery">
                                                 @foreach($json['historical'] as $item)
-                                                    @if($limit == 8)
+                                                    @if($limit == 3)
                                                         <?php break; ?>
                                                     @else
                                                         <li class="photoItem">
                                                             <div class="thumbnails">
-
+                                                                <?php list($width, $height, $type, $attr) = getimagesize( $item['large'] ); ?>
+                                                                <a href="<?= $item['large']; ?>" itemprop="contentUrl" data-size="<?=$width;?>x<?=$height;?>">
+                                                                    <img src="<?= $item['small']; ?>" itemprop="thumbnail" >
+                                                                </a>
                                                             </div>
                                                             <hr>
-
+                                                            <p style="text-align: center"><?= $item['date']; ?></p>
                                                         </li>
                                                         <?php $limit++; ?>
                                                     @endif
@@ -122,7 +89,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-md-offset-5">
-                                        <a style="margin-left: 35px;" target="_blank" href="http://screenshots.com/{{ $url }}" class="btn btn-default" role="button">See more</a>
+                                        <a target="_blank" href="http://screenshots.com/{{ $url }}" class="btn btn-default see-more-button" role="button">See more</a>
                                     </div>
                                 </div>
                             </div>
@@ -131,11 +98,9 @@
                 @endforeach
                 {{ Form::close() }}
             </ul>
-            <button type="submit" class="btn btn-primary" id="export-text" style="margin: 15px;" disabled>Export Selected Domains to TXT</button>
+            <button type="submit" class="btn btn-primary" id="export-text" disabled>Export Selected Domains to TXT</button>
         </div>
     </div>
-
-
 
     @include('partials._photoswipe')
 </div>
@@ -146,21 +111,21 @@
     <script>
          $(document).ready(function() {
 
-            $(".photoItem").each(function(){
-                $('.thumbnails').html('<img class="loading" src="/img/loading.gif">');
-                // alert("imagePaginate/" + $('.photoItem').attr('id'));
-                $.ajax({
-                        url: 'screenShot/' + $('.picture').attr('id'),
-                        type: 'get',
-                        // data:{index: $('.photoItem').attr('id')},
-                        dataType: 'json',
-                        success: function (data) {
-                                // $('.thumbnails').html('<img src="' + data.large_current + '"><br>');
-                                // alert( data.status );
-                                console.log( data );
-                        }
-                   });
-            });
+            // $(".photoItem").each(function(){
+            //     $('.thumbnails').html('<img class="loading" src="/img/loading.gif">');
+            //     // alert("imagePaginate/" + $('.photoItem').attr('id'));
+            //     $.ajax({
+            //             url: 'screenShot/' + $('.picture').attr('id'),
+            //             type: 'get',
+            //             // data:{index: $('.photoItem').attr('id')},
+            //             dataType: 'json',
+            //             success: function (data) {
+            //                     // $('.thumbnails').html('<img src="' + data.large_current + '"><br>');
+            //                     // alert( data.status );
+            //                     console.log( data );
+            //             }
+            //        });
+            // });
 
             $('#select_all').click(function(event) {
                 $('#export-text').prop('disabled', false);
