@@ -9,23 +9,11 @@
     <title>Laravel</title>
 
     <!-- Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
-    <link href="{{ elixir('css/all.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/all.css') }}" rel="stylesheet">
 
-
-    <style>
-        body {
-            font-family: 'Lato';
-            background-color: #e4e4e4;
-        }
-
-        .fa-btn {
-            margin-right: 6px;
-        }
-    </style>
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default">
@@ -63,7 +51,7 @@
 
 
     <!-- JavaScripts -->
-    <script src="{{ elixir('js/all.js') }}"></script>
+    <script src="{{ asset('js/all.js') }}"></script>
 
     @yield('scripts')
 </body>
