@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Cache;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -47,10 +48,55 @@ class screenshotController extends Controller
         $to_be_replace = array(" ","https://", "http://", "www.");
         $will_replace = array("", "", "", "", "");
         $pieces = explode(PHP_EOL, str_replace($to_be_replace, $will_replace, $request->input('textarea')));
+        $historical = [];
+
+        foreach ($pieces as $key => $url) {
+
+            // $url = 'http://dynupdate.no-ip.com/ip.php';
+            // $proxy = '127.0.0.1:8888';
+
+            // $ch = curl_init();
+            // curl_setopt($ch, CURLOPT_URL,$url);
+            // curl_setopt($ch, CURLOPT_PROXY, $proxy);
+            // //curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxyauth);
+            // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            // curl_setopt($ch, CURLOPT_HEADER, 1);
+            // $curl_scraped_page = curl_exec($ch);
+            // curl_close($ch);
+
+            // echo $curl_scraped_page;
 
 
-        return view('screenShot.index', compact('pieces', 'option', 'count'));
-        // return $pieces;
+            if(empty($url))
+            {
+                unset($pieces[$key]);
+            }
+            else
+            {
+                if (Cache::has($url)) {
+                    echo "cached!";
+                    // $value = Cache::get($url);
+                    $historical[$key] = Cache::get($url);
+                }
+                else{
+                    echo "not cached!";
+                    $history = 'http://api.screenshots.com/v1/'. $url .'/history/';
+                    $content = @file_get_contents($history);
+
+                    if($content === FALSE){
+                        unset($pieces[$key]);
+                    }
+                    else{
+                        $historical[$key] = json_decode($content, true);
+                        $value = Cache::forever($url, json_decode($content, true));
+                    }
+                }
+            }
+        }
+
+        return view('screenShot.index', compact('pieces', 'historical', 'option', 'count'));
+        // return $historical[0]['historical'][0]['large'];
     }
 
     /**
