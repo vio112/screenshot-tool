@@ -49,6 +49,7 @@ class screenshotController extends Controller
         $will_replace = array("", "", "", "", "");
         $pieces = explode(PHP_EOL, str_replace($to_be_replace, $will_replace, $request->input('textarea')));
         $historical = [];
+        $content = "";
 
         foreach ($pieces as $key => $url) {
 
@@ -75,12 +76,11 @@ class screenshotController extends Controller
             else
             {
                 if (Cache::has($url)) {
-                    echo "cached!";
-                    // $value = Cache::get($url);
+                    // echo "cached!";
                     $historical[$key] = Cache::get($url);
                 }
                 else{
-                    echo "not cached!";
+                    // echo "not cached!";
                     $history = 'http://api.screenshots.com/v1/'. $url .'/history/';
                     $content = @file_get_contents($history);
 
@@ -88,8 +88,11 @@ class screenshotController extends Controller
                         unset($pieces[$key]);
                     }
                     else{
-                        $historical[$key] = json_decode($content, true);
-                        $value = Cache::forever($url, json_decode($content, true));
+                        // $historical[$key] = json_decode($content, true);
+                        $historical[$key] = Cache::remember($url, 1440, function() use ($content)
+                        {
+                            return json_decode($content, true);
+                        });
                     }
                 }
             }
@@ -97,6 +100,7 @@ class screenshotController extends Controller
 
         return view('screenShot.index', compact('pieces', 'historical', 'option', 'count'));
         // return $historical[0]['historical'][0]['large'];
+        // return $historical;
     }
 
     /**
@@ -114,12 +118,28 @@ class screenshotController extends Controller
         // return view('screenShot.show', compact('id'));
     }
 
-    public function imagePaginate($id)
+    public function imagePaginate($option, $url, $id)
     {
-        $history = 'http://api.screenshots.com/v1/'. $id .'/history/';
-        $content = file_get_contents($history);
+        $cached = Cache::get($url);
 
-        return response()->json($content);
+        if(strcmp($option, 'current') == 0)
+        {
+            $content = $cached;
+            list($width, $height, $type, $attr) = getimagesize( $content['large_current'] );
+        }
+        else
+        {
+            $content = $cached['historical'][$id];
+            list($width, $height, $type, $attr) = getimagesize( $content['large'] );
+        }
+
+        $content['option'] = $option;
+        $content['width'] = $width;
+        $content['height'] = $height;
+
+        json_encode($content);
+
+        return Response()->json($content);
     }
 
     public function downloadTxt(Request $request) {

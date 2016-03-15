@@ -5773,10 +5773,19 @@ img {
   background: #f8f8f8;
   min-height: 100vh; }
 
+.picture {
+  height: auto !important; }
+
+.loading-thumbnails {
+  width: 205.6px;
+  height: 213px;
+  overflow: hidden; }
+
 .thumbnails {
   width: 205.6px;
   height: 173px;
-  overflow: hidden; }
+  overflow: hidden;
+  margin-bottom: 10px; }
 
 .domainList {
   background: #e4e4e4; }
@@ -5792,8 +5801,11 @@ img {
 .checkboxes {
   margin-right: 10px !important; }
 
+.wrapper {
+  text-align: center; }
+
 .see-more-button {
-  margin-left: 35px; }
+  margin: 10px auto; }
 
 #main-panel-body {
   padding: 0px; }
