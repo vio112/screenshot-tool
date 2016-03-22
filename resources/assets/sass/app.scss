@@ -24,7 +24,7 @@
         height: auto;
     }
 
-    .loading{
+    .img-size{
         width:  205.6px;
         height: 173px;
     }
@@ -44,9 +44,23 @@
         overflow: hidden;
     }
 
+    .loading-thumbnails-border{
+        @extend .img-size;
+        border: 1px solid #999;
+        background: #FFF;
+    }
+
+    .loading-img{
+        position: relative;
+        top: 40%;
+        width: 20%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
     .thumbnails{
-        width:  205.6px;
-        height: 173px;
+        @extend .img-size;
         overflow: hidden;
         margin-bottom: 10px;
     }

@@ -5,10 +5,10 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <h1 style="text-align: center">Screenshot Tool</h1>
-<!--             <div class="panel panel-default">
-                <div class="panel-heading">Domain:</div>
+            <!-- <div class="panel panel-default"> -->
+                <!-- <div class="panel-heading">Domain:</div> -->
 
-                <div class="panel-body"> -->
+                <div class="panel-body">
                     <div class="col-md-12">
                         <div class="row">
                             {{ Form::open(array('url' => '/screenShot')) }}
@@ -22,7 +22,7 @@
                                             </ul>
                                         </div>
                                     @endif
-                                    <textarea name="textarea" class="form-control" rows="10" id="comment" placeholder="Enter Domains here.."></textarea>
+                                    <textarea name="textarea" class="form-control" rows="10" id="comment" placeholder="Input Domains here..."></textarea>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row">
@@ -46,14 +46,15 @@
                             {{ Form::close() }}
                         </div>
                     </div>
-<!--                 </div>
-            </div> -->
+                </div>
+            <!-- </div> -->
         </div>
     </div>
-</d iv>
+</div>
 @endsection
 
 @section('scripts')
     <script>
+
     </script>
 @endsection

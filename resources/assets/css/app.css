@@ -5765,7 +5765,7 @@ img {
   width: 100%;
   height: auto; }
 
-.loading {
+.img-size, .loading-thumbnails-border, .thumbnails {
   width: 205.6px;
   height: 173px; }
 
@@ -5781,9 +5781,19 @@ img {
   height: 213px;
   overflow: hidden; }
 
+.loading-thumbnails-border {
+  border: 1px solid #999;
+  background: #FFF; }
+
+.loading-img {
+  position: relative;
+  top: 40%;
+  width: 20%;
+  height: auto;
+  display: block;
+  margin: 0 auto; }
+
 .thumbnails {
-  width: 205.6px;
-  height: 173px;
   overflow: hidden;
   margin-bottom: 10px; }
 

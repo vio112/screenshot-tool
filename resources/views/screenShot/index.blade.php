@@ -49,7 +49,7 @@
                                 </li>
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <ul class="content-slider picture" itemscope itemtype="http://schema.org/ImageGallery">
+                                        <ul class="picture content-slider" itemscope itemtype="http://schema.org/ImageGallery">
                                             @foreach($url['historical'] as $key => $item)
                                                 @if($limit == 8)
                                                     <?php break; ?>
@@ -83,10 +83,61 @@
 
 @section('scripts')
     <script>
-         $(document).ready(function() {
+        $(document).ajaxStop(function () {
+
+            var $pswp = $('.pswp')[0];
+            var image = [];
+
+            $('.picture').each( function() {
+                var $pic     = $(this),
+                    getItems = function() {
+                        var items = [];
+                        $pic.find('a').each(function() {
+                            var $href   = $(this).attr('href'),
+                                $size   = $(this).data('size').split('x'),
+                                $width  = $size[0],
+                                $height = $size[1];
+
+                            var item = {
+                                src : $href,
+                                w   : $width,
+                                h   : $height
+                            }
+
+                            items.push(item);
+                        });
+                        return items;
+                    }
+
+                var items = getItems();
+
+                console.log(items);
+
+                $.each(items, function(index, value) {
+                    image[index]     = new Image();
+                    image[index].src = value['src'];
+                });
+
+                $pic.on('click', '.photoItem', function(event) {
+                    event.preventDefault();
+
+                    var $index = $(this).index();
+                    var options = {
+                        index: $index,
+                        bgOpacity: 0.7,
+                        showHideOpacity: true
+                    }
+
+                    var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+                    lightBox.init();
+                });
+            });
+        });
+
+        $(document).ready(function() {
 
             $(".photoItem").each(function(index, element){
-                $(element).html('<div class="loading-thumbnails"><img class="loading" src="/img/loading.gif"></div>');
+                $(element).html('<div class="loading-thumbnails"><div class="loading-thumbnails-border"><img class="loading-img" src="/img/loading.gif"></div></div>');
                 // alert('imagePaginate/' + $(this).attr('id'));
                 $.ajax({
                         url: 'imagePaginate/' + $(this).attr('id'),
@@ -147,50 +198,8 @@
                 speed:600
             });
 
-            var $pswp = $('.pswp')[0];
-            var image = [];
-
-            $('.picture').each( function() {
-                var $pic     = $(this),
-                    getItems = function() {
-                        var items = [];
-                        $pic.find('a').each(function() {
-                            var $href   = $(this).attr('href'),
-                                $size   = $(this).data('size').split('x'),
-                                $width  = $size[0],
-                                $height = $size[1];
-
-                            var item = {
-                                src : $href,
-                                w   : $width,
-                                h   : $height
-                            }
-
-                            items.push(item);
-                        });
-                        return items;
-                    }
-
-                var items = getItems();
-
-                $.each(items, function(index, value) {
-                    image[index]     = new Image();
-                    image[index].src = value['src'];
-                });
-
-                $pic.on('click', '.photoItem', function(event) {
-                    event.preventDefault();
-
-                    var $index = $(this).index();
-                    var options = {
-                        index: $index,
-                        bgOpacity: 0.7,
-                        showHideOpacity: true
-                    }
-
-                    var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-                    lightBox.init();
-                });
+            $(".photoItem").click(function(event) {
+              event.preventDefault();
             });
         });
     </script>
